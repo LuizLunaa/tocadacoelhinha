@@ -1,101 +1,557 @@
-import Image from "next/image";
+'use client';
+
+import Image from 'next/image';
+import { Parallax, ParallaxLayer } from '@react-spring/parallax';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    const alignCenter = { display: 'flex', alignItems: 'center' };
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    const [showFirstLayer, setShowFirstLayer] = useState(true);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setShowFirstLayer((prev) => !prev);
+        }, 5000); // alterna a cada 3 segundos
+
+        return () => clearInterval(interval); // limpa o intervalo ao desmontar
+    }, []);
+
+    return (
+        <>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div
+                    style={{
+                        width: '50%',
+                        backgroundColor: 'white',
+                        position: 'relative',
+                        zIndex: -1,
+                    }}
+                >
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '10px',
+                        }}
+                    >
+                        <Image
+                            src='/Images/logo.png'
+                            alt='Logo'
+                            width={250}
+                            height={50}
+                            style={{ cursor: 'pointer' }}
+                        />
+                    </div>
+                </div>
+
+                <div
+                    style={{
+                        flexBasis: '300px',
+                        position: 'relative',
+                    }}
+                >
+                    <Parallax
+                        pages={2}
+                        style={{
+                            width: '100%',
+                            position: 'fixed',
+                            right: 0,
+                            zIndex: -1,
+                        }}
+                    >
+                        <ParallaxLayer
+                            offset={0}
+                            speed={0.5}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-start',
+                                transition: 'opacity 1s ease-in-out', // transição suave
+                                opacity: showFirstLayer ? 1 : 0, // controla a opacidade com base no estado
+                            }}
+                        >
+                            <div style={{ padding: 20, marginTop: 60 }}>
+                                <h1
+                                    style={{
+                                        fontSize: 20,
+                                        color: 'white',
+                                        backgroundColor: '#E4217F',
+                                        display: 'inline-block',
+                                        padding: '2px',
+                                        fontFamily: 'Montserrat, sans-serif',
+                                    }}
+                                >
+                                    18 À 21 DE OUTUBRO
+                                </h1>
+                                <h1
+                                    style={{
+                                        fontSize: 50,
+                                        maxWidth: '480px',
+                                        wordWrap: 'break-word',
+                                        lineHeight: '1.0',
+                                        marginTop: 10,
+                                        fontFamily: 'Montserrat, sans-serif',
+                                        fontWeight: 'bold',
+                                    }}
+                                >
+                                    Vem aí a mansão mais esperada do ano
+                                </h1>
+                            </div>
+                        </ParallaxLayer>
+
+                        {/* Segundo ParallaxLayer */}
+                        <ParallaxLayer
+                            offset={0}
+                            speed={0.5}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-start',
+                                transition: 'opacity 1s ease-in-out', // transição suave
+                                opacity: showFirstLayer ? 0 : 1, // controla a opacidade com base no estado
+                            }}
+                        >
+                            <div
+                                style={{
+                                    padding: 20,
+                                    backgroundColor: 'white',
+                                    width: 500,
+                                }}
+                            >
+                                <h1
+                                    style={{
+                                        fontSize: 20,
+                                        color: 'white',
+                                        backgroundColor: '#E4217F',
+                                        display: 'inline-block',
+                                        padding: '2px',
+                                        fontFamily: 'Montserrat, sans-serif',
+                                    }}
+                                >
+                                    15 PARTICIPANTES
+                                </h1>
+                                <h1
+                                    style={{
+                                        fontSize: 50,
+                                        maxWidth: '580px',
+                                        wordWrap: 'break-word',
+                                        lineHeight: '1.0',
+                                        marginTop: 10,
+                                        fontFamily: 'Montserrat, sans-serif',
+                                        fontWeight: 'bold',
+                                    }}
+                                >
+                                    Criando os mais quentes conteúdos da
+                                    Internet
+                                </h1>
+                            </div>
+                        </ParallaxLayer>
+
+                        <ParallaxLayer
+                            offset={0.2}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model1.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    borderRadius: '15px',
+                                    marginRight: 320,
+                                    marginBottom: 540,
+                                }}
+                            />
+                        </ParallaxLayer>
+                        <ParallaxLayer
+                            offset={0.3}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model2.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    marginRight: 160,
+                                    marginBottom: 550,
+                                }}
+                            />
+                        </ParallaxLayer>
+                        <ParallaxLayer
+                            offset={0.2}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model3.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    borderRadius: '15px',
+                                    marginBottom: 680,
+                                }}
+                            />
+                        </ParallaxLayer>
+
+                        <ParallaxLayer
+                            offset={0.3}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model4.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    borderRadius: '15px',
+                                    marginBottom: 300,
+                                }}
+                            />
+                        </ParallaxLayer>
+
+                        <ParallaxLayer
+                            offset={0.3}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model5.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    borderRadius: '15px',
+                                    marginRight: 320,
+                                    marginBottom: 200,
+                                }}
+                            />
+                        </ParallaxLayer>
+
+                        <ParallaxLayer
+                            offset={0.3}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model6.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    marginRight: 160,
+                                    marginBottom: 40,
+                                }}
+                            />
+                        </ParallaxLayer>
+
+                        <ParallaxLayer
+                            offset={0.8}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model7.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    borderRadius: '15px',
+                                    marginBottom: 430,
+                                }}
+                            />
+                        </ParallaxLayer>
+
+                        <ParallaxLayer
+                            offset={0.9}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model8.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    borderRadius: '15px',
+                                    marginRight: 320,
+                                    marginBottom: 470,
+                                }}
+                            />
+                        </ParallaxLayer>
+
+                        <ParallaxLayer
+                            offset={0.8}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model9.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    marginRight: 160,
+                                    marginBottom: 140,
+                                }}
+                            />
+                        </ParallaxLayer>
+
+                        <ParallaxLayer
+                            offset={0.8}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model10.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    borderRadius: '15px',
+                                    marginBottom: -177,
+                                }}
+                            />
+                        </ParallaxLayer>
+
+                        <ParallaxLayer
+                            offset={0.9}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model11.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    borderRadius: '15px',
+                                    marginRight: 320,
+                                    marginBottom: -56,
+                                }}
+                            />
+                        </ParallaxLayer>
+
+                        <ParallaxLayer
+                            offset={0.8}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model12.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    marginRight: 160,
+                                    marginBottom: -400,
+                                }}
+                            />
+                        </ParallaxLayer>
+
+                        <ParallaxLayer
+                            offset={0.8}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model13.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    borderRadius: '15px',
+                                    marginBottom: -800,
+                                }}
+                            />
+                        </ParallaxLayer>
+
+                        <ParallaxLayer
+                            offset={0.9}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model14.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    borderRadius: '15px',
+                                    marginRight: 320,
+                                    marginBottom: -620,
+                                }}
+                            />
+                        </ParallaxLayer>
+
+                        <ParallaxLayer
+                            offset={0.9}
+                            speed={0.2}
+                            style={{
+                                ...alignCenter,
+                                justifyContent: 'flex-end',
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Image
+                                src='/Images/model15.png'
+                                alt='Imagem 9'
+                                width={180}
+                                height={180}
+                                style={{
+                                    marginRight: 160,
+                                    marginBottom: -800,
+                                }}
+                            />
+                        </ParallaxLayer>
+                        <ParallaxLayer
+                            offset={1}
+                            speed={0.3}
+                            style={{
+                                justifyContent: 'flex-start',
+                                backgroundColor: '#000',
+                            }}
+                        >
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    padding: '10px',
+                                }}
+                            >
+                                <Image
+                                    src='/Images/logonegativo.png'
+                                    alt='Logo'
+                                    width={250}
+                                    height={50}
+                                    style={{ cursor: 'pointer' }}
+                                />
+                            </div>
+                            <div style={{ padding: 20 }}>
+                                <h1
+                                    style={{
+                                        fontSize: 20,
+                                        color: 'white',
+                                        display: 'inline-block', // Alterado para inline-block
+                                        padding: '2px', // Adicionando um padding
+                                        fontFamily: 'Montserrat, sans-serif', // Adicionando a fonte
+                                    }}
+                                >
+                                    Estamos preparando muitas novidades
+                                </h1>
+                                <h1
+                                    style={{
+                                        fontSize: 40,
+                                        maxWidth: '600px', // Definindo uma largura máxima
+                                        wordWrap: 'break-word', // Quebra de linha para o texto
+                                        lineHeight: '1.0', // Ajustando a altura da linha (opcional)
+                                        marginTop: 10,
+                                        fontFamily: 'Montserrat, sans-serif', // Adicionando a fonte
+                                        fontWeight: 'bold',
+                                        color: 'white',
+                                    }}
+                                >
+                                    Fique por dentro de tudo que está rolando e
+                                    tenha vantagens exclusivas na assinatura VIP
+                                </h1>
+                            </div>
+                            <div
+                                style={{
+                                    padding: 30,
+                                    marginTop: 10,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    backgroundColor: 'black',
+                                    maxWidth: 480,
+                                    height: 120,
+                                }}
+                            >
+                                <Image
+                                    src='/Images/arrowleft.png'
+                                    alt='Seta para baixo'
+                                    width={50}
+                                    height={50}
+                                    style={{
+                                        marginRight: '30px',
+                                    }}
+                                />
+                                <button
+                                    style={{
+                                        fontSize: 20,
+                                        color: 'white',
+                                        fontFamily: 'Montserrat, sans-serif',
+                                        backgroundColor: '#E4217F',
+                                        borderRadius: 8,
+                                        padding: 10,
+                                        fontWeight: 'bold',
+                                    }}
+                                >
+                                    PARTICIPAR DO GRUPO FREE
+                                </button>
+                            </div>
+                        </ParallaxLayer>
+                    </Parallax>
+                </div>
+            </div>
+        </>
+    );
 }
